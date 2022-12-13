@@ -1,13 +1,12 @@
 package market_homework.services;
 
-
 import market_homework.entities.Product;
-import market_homework.exceptions.ResourceNotFoundException;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import market_homework.exceptions.ResourceNotFoundException;
 import market_homework.utils.Cart;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
 @Service
