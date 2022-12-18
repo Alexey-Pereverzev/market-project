@@ -13,3 +13,4 @@ public class ProductDto {
     private BigDecimal cost;
     private String categoryTitle;
 }
+

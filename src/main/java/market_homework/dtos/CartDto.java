@@ -1,6 +1,5 @@
 package market_homework.dtos;
 
-
 import market_homework.converters.LineItemConverter;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

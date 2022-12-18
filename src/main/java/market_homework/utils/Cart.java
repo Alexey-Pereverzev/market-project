@@ -1,6 +1,5 @@
 package market_homework.utils;
 
-
 import market_homework.entities.Product;
 import lombok.Data;
 
