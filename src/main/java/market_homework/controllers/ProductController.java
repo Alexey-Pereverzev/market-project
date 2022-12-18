@@ -2,7 +2,7 @@ package market_homework.controllers;
 
 import market_homework.converters.ProductConverter;
 import market_homework.dtos.ProductDto;
-import market_homework.entities.Product;
+import market_homework.entities.ProductEntity;
 import market_homework.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,7 @@ import market_homework.services.ProductService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -20,13 +21,13 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.findAll();
+    public List<ProductDto> getAllProducts() {
+        return productService.findAll().stream().map(productConverter::entityToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
-        Optional<Product> p = productService.findById(id);
+        Optional<ProductEntity> p = productService.findById(id);
             return productConverter.entityToDto(p.orElseThrow(() ->
                     new ResourceNotFoundException("Продукт с id = " + id + " не найден")));
     }

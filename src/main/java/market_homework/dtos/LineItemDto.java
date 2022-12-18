@@ -11,6 +11,6 @@ public class LineItemDto {
     private Long productId;
     private String productTitle;
     private int quantity;
-    private BigDecimal costPerProduct;
-    private BigDecimal cost;
+    private BigDecimal pricePerProduct;
+    private BigDecimal price;
 }

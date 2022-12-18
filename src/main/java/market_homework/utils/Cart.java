@@ -1,7 +1,7 @@
 package market_homework.utils;
 
-import market_homework.entities.Product;
 import lombok.Data;
+import market_homework.entities.ProductEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 @Data
 public class Cart {
     private List<LineItem> items;
-    private BigDecimal totalCost;
+    private BigDecimal totalPrice;
 
-    public void add(Product p) {
+    public void add(ProductEntity p) {
         for (LineItem item : items) {
             if (item.getProductId().equals(p.getId())) {
                 item.incrementQuantity();
@@ -19,22 +19,22 @@ public class Cart {
                 return;
             }
         }
-        LineItem item = new LineItem(p.getId(), p.getTitle(), 1, p.getCost(), p.getCost());
+        LineItem item = new LineItem(p.getId(), p.getTitle(), 1, p.getPrice(), p.getPrice());
         items.add(item);
         recalculate();
     }
 
     public void clear() {
         items.clear();
-        totalCost = BigDecimal.ZERO;
+        totalPrice = BigDecimal.ZERO;
     }
 
     private void recalculate() {
-        totalCost = BigDecimal.ZERO;
-        items.forEach(i -> totalCost = totalCost.add(i.getCost()));
+        totalPrice = BigDecimal.ZERO;
+        items.forEach(i -> totalPrice = totalPrice.add(i.getPrice()));
     }
 
-    public void decrease(Product p) {
+    public void decrease(ProductEntity p) {
         for (LineItem item : items) {
             if (item.getProductId().equals(p.getId())) {
                 if (item.getQuantity()>1) {

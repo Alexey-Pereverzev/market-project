@@ -1,7 +1,7 @@
 package market_homework.services;
 
-import market_homework.entities.Product;
 import lombok.RequiredArgsConstructor;
+import market_homework.entities.ProductEntity;
 import market_homework.exceptions.ResourceNotFoundException;
 import market_homework.utils.Cart;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class CartService {
     }
 
     public void addToCart(Long productId) {
-        Product p = productService.findById(productId).orElseThrow(() ->
+        ProductEntity p = productService.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("Продукт с id: " + productId + " не найден"));
         cart.add(p);
     }
@@ -36,7 +36,7 @@ public class CartService {
     }
 
     public void decrease(Long productId) {
-        Product p = productService.findById(productId).orElseThrow(() ->
+        ProductEntity p = productService.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("Продукт с id: " + productId + " не найден"));
         cart.decrease(p);
     }

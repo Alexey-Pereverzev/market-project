@@ -1,6 +1,5 @@
 package market_homework.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "products")
 @NoArgsConstructor
 @Data
-public class Product {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,13 +22,13 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "cost")
-    private BigDecimal cost;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonIgnore
-    private Category category;
+//    @JsonIgnore
+    private CategoryEntity category;
 
     @Column(name = "created_at")
     @CreationTimestamp
