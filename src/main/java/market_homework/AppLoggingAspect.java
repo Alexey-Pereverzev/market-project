@@ -54,7 +54,7 @@ public class AppLoggingAspect {
         return out;
     }
 
-    public List<String> returnStatistics () {
+    public List<String> returnStatistics() {
         return new ArrayList<>(Arrays.asList("ProductService: " + productTime + "ms",
                 "CategoryService: " + categoryTime + "ms",
                 "CartService: " + cartTime + "ms"));

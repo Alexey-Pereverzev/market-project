@@ -34,7 +34,7 @@
         <tr ng-repeat="p in products">
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
-            <td class="text-right">{{p.cost.toFixed(2)}}</td>
+            <td class="text-right">{{p.price.toFixed(2)}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
             </td>
@@ -52,7 +52,7 @@
             <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title" placeholder="Название">
         </div>
         <div class="col-auto">
-            <input type="number" class="form-control" id="newProductCost" ng-model="newProduct.cost" placeholder="Цена">
+            <input type="number" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
         </div>
         <div class="col-auto">
             <input type="text" class="form-control" id="newProductCategoryTitle"
@@ -88,7 +88,7 @@
         <tbody>
         <tr ng-repeat="item in cart.items">
             <td>{{item.productTitle}}</td>
-            <td class="text-center">{{item.costPerProduct.toFixed(2)}}</td>
+            <td class="text-center">{{item.pricePerProduct.toFixed(2)}}</td>
             <td>
                 <button class="btn btn-info" ng-click="addToCart(item.productId)"> + </button>
             </td>
@@ -96,7 +96,7 @@
             <td>
                 <button class="btn btn-info" ng-click="decrease(item.productId)"> - </button>
             </td>
-            <td class="text-center">{{item.cost.toFixed(2)}}</td>
+            <td class="text-center">{{item.price.toFixed(2)}}</td>
         </tr>
         </tbody>
     </table>

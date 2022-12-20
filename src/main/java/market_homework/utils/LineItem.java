@@ -13,16 +13,16 @@ public class LineItem {
     private Long productId;
     private String productTitle;
     private int quantity;
-    private BigDecimal costPerProduct;
-    private BigDecimal cost;
+    private BigDecimal pricePerProduct;
+    private BigDecimal price;
 
     public void incrementQuantity() {
         quantity++;
-        cost = cost.add(costPerProduct);
+        price = price.add(pricePerProduct);
     }
 
     public void decrementQuantity() {
         quantity--;
-        cost = cost.subtract(costPerProduct);
+        price = price.subtract(pricePerProduct);
     }
 }

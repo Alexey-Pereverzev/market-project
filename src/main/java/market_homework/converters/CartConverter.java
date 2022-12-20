@@ -1,10 +1,10 @@
 package market_homework.converters;
 
 
-import market_homework.dtos.CartDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import market_homework.dtos.CartDto;
 import market_homework.utils.Cart;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class CartConverter {
     public CartDto entityToDto(Cart cart) {
         CartDto cartDto = new CartDto(lineItemConverter);
         cartDto.setDtoList(cart.getItems());
-        cartDto.setTotalCost(cart.getTotalCost());
+        cartDto.setTotalPrice(cart.getTotalPrice());
         return cartDto;
     }
 }

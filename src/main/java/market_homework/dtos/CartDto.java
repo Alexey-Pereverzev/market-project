@@ -1,8 +1,8 @@
 package market_homework.dtos;
 
-import market_homework.converters.LineItemConverter;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import market_homework.converters.LineItemConverter;
 import market_homework.utils.LineItem;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ public class CartDto {
     private final LineItemConverter lineItemConverter;
 
     private List<LineItemDto> dtoItems;
-    private BigDecimal totalCost;
+    private BigDecimal totalPrice;
 
     public void setDtoList(List<LineItem> itemsList) {
         for (LineItem item : itemsList) {
