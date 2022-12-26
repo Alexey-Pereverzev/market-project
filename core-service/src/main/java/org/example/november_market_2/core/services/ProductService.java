@@ -2,12 +2,15 @@ package org.example.november_market_2.core.services;
 
 import lombok.RequiredArgsConstructor;
 import org.example.november_market_2.api.ProductDto;
+import org.example.november_market_2.core.converters.ProductConverter;
 import org.example.november_market_2.core.entities.Product;
 import org.example.november_market_2.core.exceptions.ResourceNotFoundException;
 import org.example.november_market_2.core.repositories.ProductMatrix;
 import org.example.november_market_2.core.soap.products.ProductSoap;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductMatrix matrix;
     private final CategoryService categoryService;
+
+    private final ProductConverter productConverter;
 
     public List<Product> findAll() {
         return matrix.findAll();
@@ -56,6 +61,39 @@ public class ProductService {
 
     public List<ProductSoap> getAllProducts() {
         return matrix.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
+    }
+
+    public static Optional<BigDecimal> strToDecimal(Optional<String> str) {
+        if (str.isEmpty()) {
+            return Optional.empty();
+        }
+        try {
+            Double.parseDouble(str.get());
+            return Optional.of(new BigDecimal(str.get()));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
+    public List<ProductDto> findWithFilter(Optional<String> productFilter,
+                                           Optional<String> minPriceStr,
+                                           Optional<String> maxPriceStr) {
+
+        Optional<BigDecimal> minPrice = strToDecimal(minPriceStr);
+        Optional<BigDecimal> maxPrice = strToDecimal(maxPriceStr);
+
+        Specification<Product> spec = Specification.where(null);
+
+        if (productFilter.isPresent() && !productFilter.get().isBlank()) {
+            spec = spec.and(ProductSpecification.productLike(productFilter.get()));
+        }
+        if (minPrice.isPresent()) {
+            spec = spec.and(ProductSpecification.minPrice(minPrice.get()));
+        }
+        if (maxPrice.isPresent()) {
+            spec = spec.and(ProductSpecification.maxPrice(maxPrice.get()));
+        }
+        return matrix.findAll(spec).stream().map(productConverter::entityToDto).collect(Collectors.toList());
     }
 }
 

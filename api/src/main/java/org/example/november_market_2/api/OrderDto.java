@@ -7,7 +7,7 @@ public class OrderDto {
 
     private Long id;
 
-    private UserDto user;
+    private String username;
 
     private BigDecimal totalPrice;
 
@@ -18,7 +18,7 @@ public class OrderDto {
 
     public OrderDto(Long id, UserDto user, BigDecimal totalPrice, List<OrderItemDto> items) {
         this.id = id;
-        this.user = user;
+        this.username = username;
         this.totalPrice = totalPrice;
         this.items = items;
     }
@@ -31,12 +31,12 @@ public class OrderDto {
         this.id = id;
     }
 
-    public UserDto getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public BigDecimal getTotalPrice() {

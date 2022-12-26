@@ -21,8 +21,10 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public List<ProductDto> getAllProducts() {
-        return productService.findAll().stream().map(productConverter::entityToDto).collect(Collectors.toList());
+    public List<ProductDto> getAllProducts(@RequestParam("productFilter") Optional<String> productFilter,
+                                           @RequestParam("priceMinFilter") Optional<String> minPrice,
+                                           @RequestParam("priceMaxFilter") Optional<String> maxPrice) {
+        return productService.findWithFilter(productFilter, minPrice, maxPrice);
     }
 
     @GetMapping("/{id}")
