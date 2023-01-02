@@ -7,35 +7,67 @@ import org.example.november_market_2.cart.utils.Cart;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor            //  позволяет не инжектить корзину, это важно, потому что у нас нет такого бина
 public class CartService {
     private final ProductServiceIntegration productServiceIntegration;
-    private Cart cart;
+
+    private Map<String, Cart> carts;
 
     @PostConstruct
     public void init() {
-        cart = new Cart();
-        cart.setItems(new ArrayList<>());
+        carts = new HashMap<>();
     }
 
-    public Cart getCurrentCart() {
-        return cart;
+
+    public Cart getCurrentCart(String cartId) {
+        if (!carts.containsKey(cartId)) {
+            Cart cart = new Cart();
+            carts.put(cartId, cart);
+        }
+        return carts.get(cartId);
     }
 
-    public void addToCart(Long productId) {
+    public void addToCart(String cartId, Long productId) {
         ProductDto p = productServiceIntegration.findById(productId);
-        cart.add(p);
+        getCurrentCart(cartId).add(p);
     }
 
-    public void clearCart() {
-        cart.clear();
+
+    public void clearCart(String cartId) {
+        getCurrentCart(cartId).clear();
     }
 
-    public void decrease(Long productId) {
+    public void decrease(String cartId, Long productId) {
         ProductDto p = productServiceIntegration.findById(productId);
-        cart.decrease(p);
+        getCurrentCart(cartId).decrease(p);
+    }
+
+    public void mergeCarts(String username, String guestCartId) {
+        if (carts.containsKey(guestCartId)) {
+            if (!carts.containsKey(username)) {
+                Cart newCart = new Cart();
+                newCart.setTotalPrice(carts.get(guestCartId).getTotalPrice());
+                for (int i = 0; i < carts.get(guestCartId).getItems().size(); i++) {
+                    for (int j = 0; j < carts.get(guestCartId).getItems().get(i).getQuantity(); j++) {
+                        newCart.add(productServiceIntegration.findById(carts.get(guestCartId).getItems().get(i).getProductId()));
+                    }
+                }
+//                newCart.setItems(carts.get(guestCartId).getItems());
+                carts.put(username, newCart);
+                clearCart(guestCartId);
+            } else {
+                carts.get(username).setTotalPrice(carts.get(username).getTotalPrice().add(carts.get(guestCartId).getTotalPrice()));
+                for (int i = 0; i < carts.get(guestCartId).getItems().size(); i++) {
+                    for (int j = 0; j < carts.get(guestCartId).getItems().get(i).getQuantity(); j++) {
+                        addToCart(username, carts.get(guestCartId).getItems().get(i).getProductId());
+                    }
+                }
+                clearCart(guestCartId);
+            }
+        }
     }
 }

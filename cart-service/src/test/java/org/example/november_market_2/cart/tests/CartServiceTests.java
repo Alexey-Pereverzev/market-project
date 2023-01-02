@@ -46,16 +46,16 @@ public class CartServiceTests {
         lineItem2.setPrice(BigDecimal.valueOf(549.90));
         lineItem2.setPricePerProduct(BigDecimal.valueOf(549.90));
 
-        cartService.getCurrentCart().clear();
-        cartService.getCurrentCart().getItems().add(lineItem1);
-        cartService.getCurrentCart().getItems().add(lineItem2);
-        cartService.getCurrentCart().setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
+        cartService.getCurrentCart("").clear();
+        cartService.getCurrentCart("").getItems().add(lineItem1);
+        cartService.getCurrentCart("").getItems().add(lineItem2);
+        cartService.getCurrentCart("").setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
 
-        cartService.addToCart(10L);
-        Assertions.assertEquals(3, cartService.getCurrentCart().getItems().size());
-        Assertions.assertEquals(BigDecimal.valueOf(3422.30), cartService.getCurrentCart().getTotalPrice());
+        cartService.addToCart("",10L);
+        Assertions.assertEquals(3, cartService.getCurrentCart("").getItems().size());
+        Assertions.assertEquals(BigDecimal.valueOf(3422.30), cartService.getCurrentCart("").getTotalPrice());
         Assertions.assertEquals("Жевательные добавки для взрослых собак",
-                cartService.getCurrentCart().getItems().get(2).getProductTitle());
+                cartService.getCurrentCart("").getItems().get(2).getProductTitle());
     }
 
     @Test
@@ -74,14 +74,14 @@ public class CartServiceTests {
         lineItem2.setPrice(BigDecimal.valueOf(549.90));
         lineItem2.setPricePerProduct(BigDecimal.valueOf(549.90));
 
-        cartService.getCurrentCart().clear();
-        cartService.getCurrentCart().getItems().add(lineItem1);
-        cartService.getCurrentCart().getItems().add(lineItem2);
-        cartService.getCurrentCart().setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
+        cartService.getCurrentCart("").clear();
+        cartService.getCurrentCart("").getItems().add(lineItem1);
+        cartService.getCurrentCart("").getItems().add(lineItem2);
+        cartService.getCurrentCart("").setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
 
-        cartService.clearCart();
-        Assertions.assertEquals(0, cartService.getCurrentCart().getItems().size());
-        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart().getTotalPrice());
+        cartService.clearCart("");
+        Assertions.assertEquals(0, cartService.getCurrentCart("").getItems().size());
+        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart("").getTotalPrice());
     }
 
     @Test
@@ -118,24 +118,24 @@ public class CartServiceTests {
         lineItem2.setPrice(BigDecimal.valueOf(549.90));
         lineItem2.setPricePerProduct(BigDecimal.valueOf(549.90));
 
-        cartService.getCurrentCart().clear();
-        cartService.getCurrentCart().getItems().add(lineItem1);
-        cartService.getCurrentCart().getItems().add(lineItem2);
-        cartService.getCurrentCart().setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
+        cartService.getCurrentCart("").clear();
+        cartService.getCurrentCart("").getItems().add(lineItem1);
+        cartService.getCurrentCart("").getItems().add(lineItem2);
+        cartService.getCurrentCart("").setTotalPrice(BigDecimal.ZERO.add(lineItem1.getPrice()).add(lineItem2.getPrice()));
 
-        cartService.decrease(2L);
-        Assertions.assertEquals(1, cartService.getCurrentCart().getItems().size());
-        Assertions.assertEquals(BigDecimal.valueOf(1249.90), cartService.getCurrentCart().getTotalPrice());
+        cartService.decrease("",2L);
+        Assertions.assertEquals(1, cartService.getCurrentCart("").getItems().size());
+        Assertions.assertEquals(BigDecimal.valueOf(1249.90), cartService.getCurrentCart("").getTotalPrice());
         Assertions.assertEquals("Набор пробников для кошек",
-                cartService.getCurrentCart().getItems().get(0).getProductTitle());
+                cartService.getCurrentCart("").getItems().get(0).getProductTitle());
 
-        cartService.decrease(1L);
-        Assertions.assertEquals(0, cartService.getCurrentCart().getItems().size());
-        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart().getTotalPrice());
+        cartService.decrease("",1L);
+        Assertions.assertEquals(0, cartService.getCurrentCart("").getItems().size());
+        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart("").getTotalPrice());
 
-        cartService.decrease(2L);
-        Assertions.assertEquals(0, cartService.getCurrentCart().getItems().size());
-        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart().getTotalPrice());
+        cartService.decrease("",2L);
+        Assertions.assertEquals(0, cartService.getCurrentCart("").getItems().size());
+        Assertions.assertEquals(BigDecimal.ZERO, cartService.getCurrentCart("").getTotalPrice());
     }
 
 }

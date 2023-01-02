@@ -30,6 +30,12 @@ public class Order {
             cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
+    @Column(name="phone_number")
+    private String phoneNumber;
+
+    @Column(name="address")
+    private String address;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;

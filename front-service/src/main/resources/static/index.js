@@ -1,110 +1,66 @@
-angular.module('market', ['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
-    if ($localStorage.novemberMarketUser) {
-        try {
-            let jwt = $localStorage.novemberMarketUser.token;
-            let payload = JSON.parse(atob(jwt.split('.')[1]));
-            let currentTime = parseInt(new Date().getTime() / 1000);
-            if (currentTime > payload.exp) {
-                console.log("Token is expired!!!");
-                delete $localStorage.novemberMarketUser;
-                $http.defaults.headers.common.Authorization = '';
-            }
-        } catch (e) {
-        }
+(function () {
+    angular
+        .module('market', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'welcome/welcome.html',
+                controller: 'welcomeController'
+            })
+            .when('/store', {
+                templateUrl: 'store/store.html',
+                controller: 'storeController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
+            .when('/register', {
+                templateUrl: 'register/register.html',
+                controller: 'registerController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    }
+
+    function run($rootScope, $http, $localStorage) {
         if ($localStorage.novemberMarketUser) {
-            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.novemberMarketUser.token;
-        }
-    }
+            try {
+                let jwt = $localStorage.novemberMarketUser.token;
+                let payload = JSON.parse(atob(jwt.split('.')[1]));
+                let currentTime = parseInt(new Date().getTime() / 1000);
+                if (currentTime > payload.exp) {
+                    console.log("Token is expired!!!");
+                    delete $localStorage.novemberMarketUser;
+                    $http.defaults.headers.common.Authorization = '';
+                }
+            } catch (e) {
+            }
 
-    // $scope.loadProducts = function () {
-    //     $http.get('http://localhost:5555/core/api/v1/products')
-    //         .then(function (response) {
-    //             $scope.products = response.data;
-    //         });
-    // };
+            if ($localStorage.novemberMarketUser) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.novemberMarketUser.token;
+            }
 
-    $scope.loadWithFilter = function() {
-        let suffix = "";
-        let operands = 0;
-        if (($scope.productFilter!=null && $scope.productFilter!=="")) {
-            suffix = "/?";
-            operands = operands + 1;
-        }
-        if (($scope.priceMinFilter!=null && $scope.priceMinFilter!=="")) {
-            suffix = "/?";
-            operands = operands + 1;
-        }
-        if (($scope.priceMaxFilter!=null&& $scope.priceMaxFilter!=="")) {
-            suffix = "/?";
-            operands = operands + 1;
-        }
-        if ($scope.productFilter!=null && $scope.productFilter!=="") {
-            suffix = suffix + "productFilter=" + $scope.productFilter;
-            if (operands > 1) {
-                suffix = suffix + '\&';
-                operands = operands - 1;
+            if (!$localStorage.novemberMarketGuestCartId) {
+                $http.get('http://localhost:5555/cart/api/v1/cart/generate_id')
+                    .then(function (response) {
+                        $localStorage.novemberMarketGuestCartId = response.data.value;
+                        alert($localStorage.novemberMarketGuestCartId);
+                    });
             }
         }
-        if ($scope.priceMinFilter!=null && $scope.priceMinFilter!=="") {
-            suffix = suffix + "priceMinFilter=" + $scope.priceMinFilter;
-            if (operands > 1) {
-                suffix = suffix + '\&';
-                operands = operands - 1;
-            }
-        }
-        if ($scope.priceMaxFilter!=null && $scope.priceMaxFilter!=="") {
-            suffix = suffix + "priceMaxFilter=" + $scope.priceMaxFilter;
-        }
-        $http.get('http://localhost:5555/core/api/v1/products' + suffix)
-            .then(function (response) {
-                $scope.products = response.data;
-            });
-    };
-
-    $scope.loadCart = function () {
-        $http.get('http://localhost:5555/cart/api/v1/cart')
-            .then(function (response) {
-                $scope.cart = response.data;
-            });
-    };
-
-    $scope.clearCart = function () {
-        $http.get('http://localhost:5555/cart/api/v1/cart/clear')
-            .then(function (response) {
-                $scope.loadCart();
-            });
-    };
-
-    $scope.addToCart = function (id) {
-        $http.get('http://localhost:5555/cart/api/v1/cart/add/' + id)
-            .then(function (response) {
-                $scope.loadCart();
-            });
     }
+})();
 
-    $scope.decrease = function (id) {
-        $http.get('http://localhost:5555/cart/api/v1/cart/decrease/' + id)
-            .then(function (response) {
-                $scope.loadCart();
-            });
-    }
-
-    // $scope.deleteProduct = function (id) {
-    //     $http.delete('http://localhost:5555/core/api/v1/products/' + id)
-    //         .then(function (response) {
-    //             $scope.loadProducts();
-    //         });
-    // }
-    //
-    // $scope.createNewProduct = function () {
-    //     // console.log($scope.newProduct);
-    //     $http.post('http://localhost:5555/core/api/v1/products', $scope.newProduct)
-    //         .then(function (response) {
-    //             $scope.newProduct = null;
-    //             $scope.loadProducts();
-    //         });
-    // }
+angular.module('market').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
 
     $scope.tryToAuth = function () {
         $http.post('http://localhost:5555/auth/authenticate', $scope.user)
@@ -113,8 +69,14 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.novemberMarketUser = {username: $scope.user.username, token: response.data.token};
 
+                    alert($scope.user.username + $localStorage.novemberMarketGuestCartId);
+
+                    $scope.mergeCarts();
+
                     $scope.user.username = null;
                     $scope.user.password = null;
+
+                    $location.path('/');
                 }
             }, function errorCallback(response) {
             });
@@ -122,14 +84,23 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
     $scope.tryToLogout = function () {
         $scope.clearUser();
+        $location.path('/');
     };
 
     $scope.clearUser = function () {
         delete $localStorage.novemberMarketUser;
         $http.defaults.headers.common.Authorization = '';
+        $rootScope.clearCart();
     };
 
-    $scope.isUserLoggedIn = function () {
+    $scope.mergeCarts = function() {
+        $http.get('http://localhost:5555/cart/api/v1/cart/merge/'
+            + $localStorage.novemberMarketGuestCartId)
+            .then(function (response) {
+            });
+    }
+
+    $rootScope.isUserLoggedIn = function () {
         return !!$localStorage.novemberMarketUser;
     };
 
@@ -140,14 +111,4 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
             });
     };
 
-    $scope.createOrder = function () {
-        $http.post('http://localhost:5555/core/api/v1/orders', $scope.cart)
-            .then(function (response) {
-                $scope.clearCart();
-                }
-            );
-    }
-
-    $scope.loadWithFilter(null);
-    $scope.loadCart();
 });

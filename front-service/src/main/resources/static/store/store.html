@@ -1,0 +1,50 @@
+<div>
+    <p></p>
+    <h3>Список товаров</h3>
+    <p></p>
+    <div class="col-12 mt-3">
+        <form class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="productFilter" class="sr-only">ProductFilter</label>
+                <input type="text" class="form-control" id="productFilter" ng-model="productFilter"
+                       name="productFilter" placeholder="Product filter">
+            </div>
+
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="priceMinFilter" class="sr-only">Price min</label>
+                <input type="text" class="form-control" id="priceMinFilter" ng-model="priceMinFilter"
+                       name="priceMinFilter" placeholder="Price min">
+            </div>
+
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="priceMaxFilter" class="sr-only">Price max</label>
+                <input type="text" class="form-control" id="priceMaxFilter" ng-model="priceMaxFilter"
+                       name="priceMaxFilter" placeholder="Price max">
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-2" ng-click="loadWithFilter()">Apply</button>
+        </form>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th class="text-center">Цена</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in products">
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td class="text-right">{{p.price.toFixed(2)}}</td>
+            <td>
+                <button class="btn btn-warning" ng-click="addToCart(p.id)">В корзину</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
