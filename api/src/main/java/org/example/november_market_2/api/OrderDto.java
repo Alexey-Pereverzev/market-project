@@ -13,14 +13,20 @@ public class OrderDto {
 
     private List<OrderItemDto> items;
 
+    private String phoneNumber;
+
+    private String address;
+
     public OrderDto() {
     }
 
-    public OrderDto(Long id, UserDto user, BigDecimal totalPrice, List<OrderItemDto> items) {
+    public OrderDto(Long id, String username, BigDecimal totalPrice, List<OrderItemDto> items, String phoneNumber, String address) {
         this.id = id;
         this.username = username;
         this.totalPrice = totalPrice;
         this.items = items;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
     public Long getId() {
@@ -53,5 +59,21 @@ public class OrderDto {
 
     public void setItems(List<OrderItemDto> items) {
         this.items = items;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

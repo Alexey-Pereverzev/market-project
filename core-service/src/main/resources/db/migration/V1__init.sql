@@ -29,6 +29,8 @@ DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
                         id	                  INT(11) NOT NULL AUTO_INCREMENT,
                         username              VARCHAR(255) NOT NULL,
+                        phone_number          VARCHAR(31) NOT NULL,
+                        address               VARCHAR(511) NOT NULL,
                         total_price           DECIMAL(8,2) NOT NULL,
                         created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

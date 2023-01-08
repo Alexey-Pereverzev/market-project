@@ -6,7 +6,7 @@ CREATE TABLE users (
                        id                    INT(11) NOT NULL AUTO_INCREMENT,
                        username              VARCHAR(36) NOT NULL,
                        password              VARCHAR(80) NOT NULL,
-                       email                 VARCHAR(50) NOT NULL UNIQUE,
+                       email                 VARCHAR(50) NOT NULL,
                        created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        PRIMARY KEY (id)
