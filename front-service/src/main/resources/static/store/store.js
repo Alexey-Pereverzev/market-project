@@ -1,4 +1,6 @@
-angular.module('market').controller('storeController', function ($scope, $http, $localStorage) {
+angular.module('market').controller('storeController', function ($scope, $http, $localStorage, $rootScope) {
+
+    $scope.productsPage = [];
 
     $scope.loadWithFilter = function (page = 1) {
         $http({
@@ -40,6 +42,26 @@ angular.module('market').controller('storeController', function ($scope, $http, 
     $scope.isPageLast = function () {
         return ($scope.productsPage.number > $scope.productsPage.totalPages-2);
     };
+
+    $scope.createNewProduct = function () {
+        $http.post('http://localhost:5555/core/api/v1/products', $scope.newProduct)
+            .then(function (response) {
+                $scope.newProduct = null;
+                $scope.loadWithFilter();
+            });
+    }
+
+    $scope.deleteProduct = function (id) {
+        $http.delete('http://localhost:5555/core/api/v1/products/' + id)
+            .then(function (response) {
+                $scope.loadWithFilter();
+            });
+    }
+
+    $scope.applyProductData = function (p) {
+        $rootScope.product = p;
+    }
+
 
     $scope.loadWithFilter(null);
 });

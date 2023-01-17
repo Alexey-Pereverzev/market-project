@@ -22,18 +22,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
-//                .antMatchers("/auth/about_me").authenticated()
-//                .antMatchers("/api/v1/orders/**").authenticated()     // защищаем заказы
+                .antMatchers("/auth/about_me").authenticated()
+                .antMatchers("/api/v1/orders/**").authenticated()     // защищаем заказы
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        //  эта настройка нужна, кога мы используем REST API
+                //  эта настройка нужна, кога мы используем REST API
                 .and()
                 .headers().frameOptions().disable()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-                        //  401 статус, если гость пытается сделать запрос к защищенным данным
+        //  401 статус, если гость пытается сделать запрос к защищенным данным
 
     }
 

@@ -32,7 +32,12 @@ public class ProductService {
     }
 
     public void deleteById(Long id) {
-        matrix.deleteById(id);
+        Optional<Product> p = matrix.findById(id);
+        if (p.isPresent()) {
+            matrix.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Продукт с id: " +id + " не найден");
+        }
     }
 
     public void createNewProduct(ProductDto productDto) {
@@ -86,12 +91,12 @@ public class ProductService {
         Specification<Product> spec = Specification.where(null);
 
         if (productFilter.isPresent()) {
-            spec = spec.and(org.example.november_market_2.core.repositories.specifications.ProductSpecification.productLike(productFilter.get()));
+            spec = spec.and(ProductSpecification.productLike(productFilter.get()));
         }
         if (minPriceStr.isPresent()) {
             Optional<BigDecimal> minPriceBD = strToDecimal(minPriceStr);
             if (minPriceBD.isPresent()) {
-                spec = spec.and(org.example.november_market_2.core.repositories.specifications.ProductSpecification.minPrice(minPriceBD.get()));
+                spec = spec.and(ProductSpecification.minPrice(minPriceBD.get()));
             }
         }
         if (maxPriceStr.isPresent()) {
@@ -101,6 +106,18 @@ public class ProductService {
             }
         }
         return matrix.findAll(spec, PageRequest.of(page, pageSize)).map(productConverter::entityToDto);
+    }
+
+    public void save(ProductDto product) {
+        Product oldProduct = matrix.findById(product.getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Продукт с id: "
+                        + product.getId() + " не найден"));
+        oldProduct.setTitle(product.getTitle());
+        oldProduct.setPrice(product.getPrice());
+        oldProduct.setCategory(categoryService.findByTitle(product.getCategoryTitle())
+                .orElseThrow(() -> new ResourceNotFoundException("Категория с названием: "
+                        + product.getCategoryTitle() + " не найдена")));
+        matrix.save(oldProduct);
     }
 
 }

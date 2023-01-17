@@ -5,15 +5,22 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <td>ID Заказа</td>
-            <td>Цена</td>
+            <th>ID Заказа</th>
+            <th>Цена</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="o in orders">
             <td>{{o.id}}</td>
             <td>{{o.totalPrice}}</td>
+            <td>
+                <form action="#!/order_info">
+                    <button class="btn btn-warning" ng-click="applyOrderData(o)">Посмотреть заказ</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
+

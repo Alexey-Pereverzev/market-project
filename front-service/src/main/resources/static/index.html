@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+
 </head>
 
 <body>
@@ -26,10 +27,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#!/store">Каталог товаров</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" ng-show="isUserHasUserRole() || !isUserLoggedIn()">
                     <a class="nav-link" href="#!/cart">Корзина</a>
                 </li>
-                <li class="nav-item" ng-show="isUserLoggedIn()">
+                <li class="nav-item" ng-show="isUserLoggedIn() && isUserHasUserRole()">
                     <a class="nav-link" href="#!/orders">Мои заказы</a>
                 </li>
 
@@ -72,6 +73,8 @@
     <script src="orders/orders.js"></script>
     <script src="welcome/welcome.js"></script>
     <script src="register/register.js"></script>
+    <script src="edit/edit.js"></script>
+    <script src="order_info/order_info.js"></script>
 
 </div>
 </body>
