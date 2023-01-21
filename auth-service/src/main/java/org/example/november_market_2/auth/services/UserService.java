@@ -38,6 +38,13 @@ public class UserService implements UserDetailsService {
                 .User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
+    @Transactional
+    public List<String> getRoles(String username) {
+        User user = findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("User '%s' not found", username)));
+        return user.getRoles().stream().map(Role::getName).toList();
+    }
+
     public void createNewUser(RegisterUserDto registerUserDto, String password) {
         User user = new User();
         user.setEmail(registerUserDto.getEmail());

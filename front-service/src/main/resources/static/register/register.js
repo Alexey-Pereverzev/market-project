@@ -10,5 +10,4 @@ angular.module('market').controller('registerController', function ($scope, $htt
         }
     }
 
-
 });

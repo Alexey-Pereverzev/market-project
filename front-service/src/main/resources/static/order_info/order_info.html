@@ -1,0 +1,60 @@
+<div>
+    <p></p>
+    <h3>Заказ {{order.id}}</h3>
+    <p></p>
+    <div ng-show="order.items.length > 0">
+        <table class="table table-hover" width="100%">
+            <col style="width:15%">
+            <col style="width:50%">
+            <col style="width:10%">
+            <col style="width:15%">
+            <col style="width:10%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Название</th>
+                <th class="text-center">Цена</th>
+                <th class="text-center">Кол-во</th>
+                <th class="text-center">Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in order.items">
+                <td></td>
+                <td>{{item.productTitle}}</td>
+                <td class="text-center">{{item.pricePerProduct.toFixed(2)}}</td>
+                <td class="text-center">{{item.quantity}}</td>
+                <td class="text-center">{{item.price.toFixed(2)}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th class="text-center">Сумма к оплате:</th>
+                <th class="text-center">{{order.totalPrice.toFixed(2)}}</th>
+            </tr>
+            <tr>
+                <td>Имя: </td>
+                <td>{{order.username}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Телефон: </td>
+                <td>{{order.phoneNumber}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Адрес доставки: </td>
+                <td>{{order.address}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+

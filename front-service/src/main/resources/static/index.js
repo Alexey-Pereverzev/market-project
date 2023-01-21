@@ -26,6 +26,14 @@
                 templateUrl: 'register/register.html',
                 controller: 'registerController'
             })
+            .when('/edit', {
+                templateUrl: 'edit/edit.html',
+                controller: 'editController'
+            })
+            .when('/order_info', {
+                templateUrl: 'order_info/order_info.html',
+                controller: 'orderInfoController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -61,6 +69,8 @@
 
 angular.module('market').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
 
+    $scope.userRoles=[];
+
     $scope.tryToAuth = function () {
         $http.post('http://localhost:5555/auth/authenticate', $scope.user)
             .then(function successCallback(response) {
@@ -68,7 +78,9 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.novemberMarketUser = {username: $scope.user.username, token: response.data.token};
 
-                    alert($scope.user.username + $localStorage.novemberMarketGuestCartId);
+                    $scope.userRoles = response.data.roles;
+
+                    alert($scope.user.username + ' is authorized');
 
                     $scope.mergeCarts();
 
@@ -102,6 +114,22 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
     $rootScope.isUserLoggedIn = function () {
         return !!$localStorage.novemberMarketUser;
     };
+
+    $scope.isUserHasUserRole = function () {
+        if ($scope.userRoles !== null) {
+            return ($scope.userRoles.indexOf("ROLE_USER") !== -1);
+        } else {
+            return false;
+        }
+    }
+
+    $scope.isUserHasAdminRole = function () {
+        if ($scope.userRoles !== null) {
+            return ($scope.userRoles.indexOf("ROLE_ADMIN") !== -1);
+        } else {
+            return false;
+        }
+    }
 
     $scope.getCurrentUserInfo = function () {
         $http.get('http://localhost:5555/auth/about_me')

@@ -8,13 +8,25 @@ angular.module('market').controller('cartController', function ($rootScope, $sco
             });
     };
 
+    $rootScope.clearCart = function () {
+        $http.get('http://localhost:5555/cart/api/v1/cart/'
+            + $localStorage.novemberMarketGuestCartId
+            + '/clear/')
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    };
+
     $scope.createOrder = function () {
         if ($scope.phoneNumber!=null && $scope.phoneNumber!=="" && $scope.address!=null && $scope.address!=="") {
             $http.post('http://localhost:5555/core/api/v1/orders' +
                 '?phoneNumber=' + $scope.phoneNumber +
                 '\&' + 'address=' + $scope.address)
                 .then(function (response) {
+                    alert(response.data.value);
                     $rootScope.clearCart();
+                }, function errorCallback(response) {
+                    alert(response.data.message);
                 });
         }
     }
@@ -37,14 +49,6 @@ angular.module('market').controller('cartController', function ($rootScope, $sco
             });
     }
 
-    $rootScope.clearCart = function () {
-        $http.get('http://localhost:5555/cart/api/v1/cart/'
-            + $localStorage.novemberMarketGuestCartId
-            + '/clear/')
-            .then(function (response) {
-                $scope.loadCart();
-            });
-    };
 
     $scope.guestCreateOrder = function () {
         alert('Для оформления заказа необходимо войти в учетную запись');

@@ -54,14 +54,15 @@ VALUES
 INSERT INTO users (username,password,email)
 VALUES
     ('bob', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'bob_johnson@gmail.com'),
-    ('john', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'john_johnson@gmail.com');
+    ('john', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'john_johnson@gmail.com'),
+    ('admin', '$2a$10$BxDh5ydGKBymgpwhgdbdgOvdnLo8Bx0IqK1/zqtSzBCO/hW8pGXBe', 'admin@gmail.com');
 
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
     (1, 1),
-    (2, 2);
-
+    (2, 1),
+    (3, 2);
 
 
 

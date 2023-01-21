@@ -17,8 +17,7 @@ public class CartService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     public Cart getCurrentCart(String cartId) {
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(cartId))) {
-            // если корзины с таким id нет, ее надо создать и положить в Redis
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(cartId))) {    // если корзины с таким id нет, ее надо создать и положить в Redis
             Cart cart = new Cart();
             redisTemplate.opsForValue().set(cartId, cart);
         }
