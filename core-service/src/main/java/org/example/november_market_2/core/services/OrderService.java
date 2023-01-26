@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,22 +40,25 @@ public class OrderService {
         if (lineItemDtos.isEmpty()){
             return ("Пустой заказ");
         }
-        Order order = new Order();
+
         if (acceptablePhoneNumber(phoneNumber)) {               //  если нет недопустимых символов
             phoneNumber = phoneNumber.replace(" ", "").replace("(","").replace(")","")
                     .replace("-","");       //  выкидываем символы кроме цифр
             int length = phoneNumber.length();
-            if ((length>6) && (length<14)) {                //  проверяем длину номера - должна быть от 7 до 13
-                order.setPhoneNumber(phoneNumber);
-            } else {
+            if ((length<7) || (length>13)) {                //  проверяем длину номера - должна быть от 7 до 13
                 return ("Некорректный номер телефона");
             }
         } else {
             return ("Некорректный номер телефона");
         }
-        order.setTotalPrice(BigDecimal.ZERO);
-        order.setUsername(username);
-        order.setAddress(address);
+        Order order = Order.Builder.newBuilder()
+                .withPhoneNumber(phoneNumber)
+                .withTotalPrice(BigDecimal.ZERO)
+                .withUsername(username)
+                .withAddress(address)
+                .withItems(new ArrayList<>())
+                .build();
+
         for (LineItemDto lineItemDto : lineItemDtos) {
             OrderItem item = orderItemService.createFromLineItem(lineItemDto);
             item.setOrder(order);

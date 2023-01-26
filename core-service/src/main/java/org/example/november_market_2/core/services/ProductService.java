@@ -41,12 +41,13 @@ public class ProductService {
     }
 
     public void createNewProduct(ProductDto productDto) {
-        Product product = new Product();
-        product.setTitle(productDto.getTitle());
-        product.setPrice(productDto.getPrice());
-        product.setCategory(categoryService.findByTitle(productDto.getCategoryTitle())
-                .orElseThrow(() -> new ResourceNotFoundException("Категория с названием: "
-                        + productDto.getCategoryTitle() + " не найдена")));
+        Product product = Product.Builder.newBuilder()
+                .withTitle(productDto.getTitle())
+                .withPrice(productDto.getPrice())
+                .withCategory(categoryService.findByTitle(productDto.getCategoryTitle())
+                        .orElseThrow(() -> new ResourceNotFoundException("Категория с названием: "
+                                + productDto.getCategoryTitle() + " не найдена")))
+                .build();
         matrix.save(product);
     }
 
@@ -120,5 +121,5 @@ public class ProductService {
         matrix.save(oldProduct);
     }
 
-}
 
+}

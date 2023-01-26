@@ -46,11 +46,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void createNewUser(RegisterUserDto registerUserDto, String password) {
-        User user = new User();
-        user.setEmail(registerUserDto.getEmail());
-        user.setRoles(List.of(roleService.getUserRole()));
-        user.setPassword(password);
-        user.setUsername(registerUserDto.getUsername());
+        User user = User.Builder.newBuilder()
+                .withEmail(registerUserDto.getEmail())
+                .withRoles(List.of(roleService.getUserRole()))
+                .withPassword(password)
+                .withUsername(registerUserDto.getUsername())
+                .build();
         userRepository.save(user);
     }
 

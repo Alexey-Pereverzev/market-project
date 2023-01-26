@@ -12,14 +12,13 @@ public class OrderItemService {
     private final ProductService productService;
 
     public OrderItem createFromLineItem(LineItemDto lineItemDto) {
-        OrderItem orderItem = new OrderItem();
-
-        orderItem.setProduct(productService.findById(lineItemDto.getProductId()).orElseThrow(
-                () -> new ResourceNotFoundException("Продукт с id: " + lineItemDto.getProductId() + " не найден")
-        ));
-        orderItem.setQuantity(lineItemDto.getQuantity());
-        orderItem.setPrice(lineItemDto.getPrice());
-        orderItem.setPricePerProduct(lineItemDto.getPricePerProduct());
+        OrderItem orderItem = OrderItem.Builder.newBuilder()
+                .withProduct(productService.findById(lineItemDto.getProductId()).orElseThrow(
+                        () -> new ResourceNotFoundException("Продукт с id: " + lineItemDto.getProductId() + " не найден")))
+                .withQuantity(lineItemDto.getQuantity())
+                .withPrice(lineItemDto.getPrice())
+                .withPricePerProduct(lineItemDto.getPricePerProduct())
+                .build();
         return orderItem;
     }
 }
