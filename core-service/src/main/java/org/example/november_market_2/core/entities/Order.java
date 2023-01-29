@@ -47,5 +47,80 @@ public class Order {
     public Order() {
         items = new ArrayList<>();
     }
+
+    private Order(Builder builder) {
+        setId(builder.id);
+        setUsername(builder.username);
+        setTotalPrice(builder.totalPrice);
+        setItems(builder.items);
+        setPhoneNumber(builder.phoneNumber);
+        setAddress(builder.address);
+        setCreatedAt(builder.createdAt);
+        setUpdatedAt(builder.updatedAt);
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private String username;
+        private BigDecimal totalPrice;
+        private List<OrderItem> items;
+        private String phoneNumber;
+        private String address;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long val) {
+            id = val;
+            return this;
+        }
+
+        public Builder withUsername(String val) {
+            username = val;
+            return this;
+        }
+
+        public Builder withTotalPrice(BigDecimal val) {
+            totalPrice = val;
+            return this;
+        }
+
+        public Builder withItems(List<OrderItem> val) {
+            items = val;
+            return this;
+        }
+
+        public Builder withPhoneNumber(String val) {
+            phoneNumber = val;
+            return this;
+        }
+
+        public Builder withAddress(String val) {
+            address = val;
+            return this;
+        }
+
+        public Builder withCreatedAt(LocalDateTime val) {
+            createdAt = val;
+            return this;
+        }
+
+        public Builder withUpdatedAt(LocalDateTime val) {
+            updatedAt = val;
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
+    }
 }
+
 
