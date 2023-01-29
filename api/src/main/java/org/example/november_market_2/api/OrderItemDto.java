@@ -39,6 +39,15 @@ public class OrderItemDto {
         this.quantity = quantity;
     }
 
+    private OrderItemDto(Builder builder) {
+        setOrderId(builder.orderId);
+        setProductId(builder.productId);
+        setProductTitle(builder.productTitle);
+        setPricePerProduct(builder.pricePerProduct);
+        setPrice(builder.price);
+        setQuantity(builder.quantity);
+    }
+
     public Long getOrderId() {
         return orderId;
     }
@@ -85,5 +94,56 @@ public class OrderItemDto {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+
+    public static final class Builder {
+        private Long orderId;
+        private Long productId;
+        private String productTitle;
+        private BigDecimal pricePerProduct;
+        private BigDecimal price;
+        private int quantity;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder withOrderId(Long val) {
+            orderId = val;
+            return this;
+        }
+
+        public Builder withProductId(Long val) {
+            productId = val;
+            return this;
+        }
+
+        public Builder withProductTitle(String val) {
+            productTitle = val;
+            return this;
+        }
+
+        public Builder withPricePerProduct(BigDecimal val) {
+            pricePerProduct = val;
+            return this;
+        }
+
+        public Builder withPrice(BigDecimal val) {
+            price = val;
+            return this;
+        }
+
+        public Builder withQuantity(int val) {
+            quantity = val;
+            return this;
+        }
+
+        public OrderItemDto build() {
+            return new OrderItemDto(this);
+        }
     }
 }

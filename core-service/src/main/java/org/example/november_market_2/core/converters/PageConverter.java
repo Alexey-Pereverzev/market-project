@@ -9,12 +9,11 @@ import java.util.ArrayList;
 
 @Component
 public class PageConverter {
-
     public PageDto entityToDto(Page<ProductDto> p) {
-        PageDto pageDto = new PageDto();
-        pageDto.setTotalPages(p.getTotalPages());
-        pageDto.setNumber(p.getNumber());
-        pageDto.setContent(new ArrayList<>(p.getContent()));
-        return pageDto;
+        return PageDto.Builder.newBuilder()
+                .withTotalPages(p.getTotalPages())
+                .withNumber(p.getNumber())
+                .withContent(new ArrayList<>(p.getContent()))
+                .build();
     }
 }

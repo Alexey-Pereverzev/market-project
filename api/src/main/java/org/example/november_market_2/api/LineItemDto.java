@@ -3,6 +3,7 @@ package org.example.november_market_2.api;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
+
 @Schema(description = "Модель элемента корзины")
 public class LineItemDto {
 
@@ -21,6 +22,14 @@ public class LineItemDto {
 
     @Schema(description = "Цена выбранного количества товара", required = true, example = "6450.00")
     private BigDecimal price;
+
+    private LineItemDto(Builder builder) {
+        setProductId(builder.productId);
+        setProductTitle(builder.productTitle);
+        setQuantity(builder.quantity);
+        setPricePerProduct(builder.pricePerProduct);
+        setPrice(builder.price);
+    }
 
     public Long getProductId() {
         return productId;
@@ -71,6 +80,51 @@ public class LineItemDto {
         this.quantity = quantity;
         this.pricePerProduct = pricePerProduct;
         this.price = price;
+    }
+
+
+    public static final class Builder {
+        private Long productId;
+        private String productTitle;
+        private int quantity;
+        private BigDecimal pricePerProduct;
+        private BigDecimal price;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder withProductId(Long val) {
+            productId = val;
+            return this;
+        }
+
+        public Builder withProductTitle(String val) {
+            productTitle = val;
+            return this;
+        }
+
+        public Builder withQuantity(int val) {
+            quantity = val;
+            return this;
+        }
+
+        public Builder withPricePerProduct(BigDecimal val) {
+            pricePerProduct = val;
+            return this;
+        }
+
+        public Builder withPrice(BigDecimal val) {
+            price = val;
+            return this;
+        }
+
+        public LineItemDto build() {
+            return new LineItemDto(this);
+        }
     }
 }
 

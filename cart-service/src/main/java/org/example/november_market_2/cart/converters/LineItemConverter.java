@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class LineItemConverter {
     public LineItemDto entityToDto(LineItem l) {
-        return new LineItemDto(l.getProductId(), l.getProductTitle(), l.getQuantity(), l.getPricePerProduct(), l.getPrice());
+        return LineItemDto.Builder.newBuilder()
+                .withProductId(l.getProductId())
+                .withProductTitle(l.getProductTitle())
+                .withQuantity(l.getQuantity())
+                .withPricePerProduct(l.getPricePerProduct())
+                .withPrice(l.getPrice())
+                .build();
     }
 }
