@@ -24,6 +24,12 @@ public class PageDto {
         this.content = content;
     }
 
+    private PageDto(Builder builder) {
+        setTotalPages(builder.totalPages);
+        setNumber(builder.number);
+        setContent(builder.content);
+    }
+
     public int getTotalPages() {
         return totalPages;
     }
@@ -47,5 +53,37 @@ public class PageDto {
     public void setContent(List<ProductDto> content) {
         this.content = content;
     }
-}
 
+
+    public static final class Builder {
+        private int totalPages;
+        private int number;
+        private List<ProductDto> content;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder withTotalPages(int val) {
+            totalPages = val;
+            return this;
+        }
+
+        public Builder withNumber(int val) {
+            number = val;
+            return this;
+        }
+
+        public Builder withContent(List<ProductDto> val) {
+            content = val;
+            return this;
+        }
+
+        public PageDto build() {
+            return new PageDto(this);
+        }
+    }
+}

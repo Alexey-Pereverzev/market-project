@@ -39,6 +39,15 @@ public class OrderDto {
         this.address = address;
     }
 
+    private OrderDto(Builder builder) {
+        setId(builder.id);
+        setUsername(builder.username);
+        setTotalPrice(builder.totalPrice);
+        setItems(builder.items);
+        setPhoneNumber(builder.phoneNumber);
+        setAddress(builder.address);
+    }
+
     public Long getId() {
         return id;
     }
@@ -85,5 +94,56 @@ public class OrderDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private String username;
+        private BigDecimal totalPrice;
+        private List<OrderItemDto> items;
+        private String phoneNumber;
+        private String address;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long val) {
+            id = val;
+            return this;
+        }
+
+        public Builder withUsername(String val) {
+            username = val;
+            return this;
+        }
+
+        public Builder withTotalPrice(BigDecimal val) {
+            totalPrice = val;
+            return this;
+        }
+
+        public Builder withItems(List<OrderItemDto> val) {
+            items = val;
+            return this;
+        }
+
+        public Builder withPhoneNumber(String val) {
+            phoneNumber = val;
+            return this;
+        }
+
+        public Builder withAddress(String val) {
+            address = val;
+            return this;
+        }
+
+        public OrderDto build() {
+            return new OrderDto(this);
+        }
     }
 }

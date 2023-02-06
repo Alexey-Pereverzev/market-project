@@ -47,19 +47,20 @@ public class OrderController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@PathVariable Long id) {
-        OrderDto orderDto = new OrderDto();
         Optional<Order> o = orderService.findById(id);
         if (o.isEmpty()) {
             return new ResponseEntity<>(new AppError("ORDER_NOT_FOUND", "Заказ не найден"),
                     HttpStatus.NOT_FOUND);
         } else {
-            orderDto.setUsername(o.get().getUsername());
-            orderDto.setItems(orderService.findItemsByOrderId(id).stream().map(orderItemConverter::entityToDto)
-                    .collect(Collectors.toList()));
-            orderDto.setId(id);
-            orderDto.setTotalPrice(o.get().getTotalPrice());
-            orderDto.setPhoneNumber(o.get().getPhoneNumber());
-            orderDto.setAddress(o.get().getAddress());
+            OrderDto orderDto = OrderDto.Builder.newBuilder()
+                    .withUsername(o.get().getUsername())
+                    .withItems(orderService.findItemsByOrderId(id).stream()
+                            .map(orderItemConverter::entityToDto).collect(Collectors.toList()))
+                    .withId(id)
+                    .withTotalPrice(o.get().getTotalPrice())
+                    .withPhoneNumber(o.get().getPhoneNumber())
+                    .withAddress(o.get().getAddress())
+                    .build();
             return ResponseEntity.ok(orderDto);
         }
     }
@@ -124,4 +125,5 @@ public class OrderController {
     }
 
 }
+
 
