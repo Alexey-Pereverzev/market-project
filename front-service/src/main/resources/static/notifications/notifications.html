@@ -1,0 +1,23 @@
+<div>
+    <p></p>
+    <h1>Уведомления</h1>
+    <p></p>
+
+    <table class="table table-hover" width="100%">
+        <col style="width:75%">
+        <col style="width:25%">
+        <thead>
+        <tr>
+            <th>Уведомление</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="n in nots">
+            <td>{{n.text}}</td>
+            <td>{{n.createdAt}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -8,6 +8,9 @@ import org.example.november_market_2.core.exceptions.ResourceNotFoundException;
 import org.example.november_market_2.core.repositories.ProductMatrix;
 import org.example.november_market_2.core.repositories.specifications.ProductSpecification;
 import org.example.november_market_2.core.soap.products.ProductSoap;
+import org.example.november_market_2.core.utils.ProductChangeEvent;
+import org.example.november_market_2.core.utils.ProductDeleteEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,8 +28,9 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductMatrix matrix;
     private final CategoryService categoryService;
-
     private final ProductConverter productConverter;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<Product> findAll() {
         return matrix.findAll();
@@ -34,6 +39,8 @@ public class ProductService {
     public void deleteById(Long id) {
         Optional<Product> p = matrix.findById(id);
         if (p.isPresent()) {
+            this.eventPublisher.publishEvent(new ProductDeleteEvent(this, p.get().getId(), p.get().getTitle()));
+            //  создаем event удаления продукта
             matrix.deleteById(id);
         } else {
             throw new ResourceNotFoundException("Продукт с id: " +id + " не найден");
@@ -113,6 +120,10 @@ public class ProductService {
         Product oldProduct = matrix.findById(product.getId()).orElseThrow(() ->
                 new ResourceNotFoundException("Продукт с id: "
                         + product.getId() + " не найден"));
+        if (!Objects.equals(product.getPrice(), oldProduct.getPrice())) {        //  создаем event изменения цены
+            this.eventPublisher.publishEvent
+                    (new ProductChangeEvent(this, oldProduct.getId(), oldProduct.getTitle(), product.getPrice()));
+        }
         oldProduct.setTitle(product.getTitle());
         oldProduct.setPrice(product.getPrice());
         oldProduct.setCategory(categoryService.findByTitle(product.getCategoryTitle())
@@ -121,5 +132,6 @@ public class ProductService {
         matrix.save(oldProduct);
     }
 
-
 }
+
+

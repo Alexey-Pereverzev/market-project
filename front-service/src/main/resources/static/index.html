@@ -34,6 +34,12 @@
                     <a class="nav-link" href="#!/orders">Мои заказы</a>
                 </li>
 
+                <li class="nav-item" ng-show="isUserLoggedIn() && isUserHasUserRole()">
+                    <a class="nav-link" href="#!/notifications">Уведомления
+                        <span ng-show="(nots.length>lastNot)" class="badge badge-danger">{{nots.length - lastNot}}</span>
+                    </a>
+                </li>
+
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <form class="align-middle" ng-submit="tryToAuth()">
                         <div class="input-group input-group-sm" style="padding: 4px;">
@@ -75,6 +81,7 @@
     <script src="register/register.js"></script>
     <script src="edit/edit.js"></script>
     <script src="order_info/order_info.js"></script>
+    <script src="notifications/notifications.js"></script>
 
 </div>
 </body>
