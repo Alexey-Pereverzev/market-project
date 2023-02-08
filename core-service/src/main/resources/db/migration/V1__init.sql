@@ -24,6 +24,16 @@ CREATE TABLE categories (
                             PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
+DROP TABLE IF EXISTS notifications;
+
+CREATE TABLE notifications (
+                               id                    INT(11) NOT NULL AUTO_INCREMENT,
+                               product_id            INT(11) NOT NULL,
+                               notification_text     VARCHAR(1023) NOT NULL,
+                               created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                               PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS orders;
 
 CREATE TABLE orders (

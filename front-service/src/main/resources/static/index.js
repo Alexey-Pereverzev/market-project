@@ -34,6 +34,10 @@
                 templateUrl: 'order_info/order_info.html',
                 controller: 'orderInfoController'
             })
+            .when('/notifications', {
+                templateUrl: 'notifications/notifications.html',
+                controller: 'notificationController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -83,6 +87,8 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                     alert($scope.user.username + ' is authorized');
 
                     $scope.mergeCarts();
+
+                    $rootScope.loadNotifications();
 
                     $scope.user.username = null;
                     $scope.user.password = null;
@@ -137,5 +143,6 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                 alert(response.data.value);
             });
     };
+
 
 });
