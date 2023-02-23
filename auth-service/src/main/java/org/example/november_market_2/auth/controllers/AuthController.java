@@ -22,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация", description = "Методы сервиса аутентификации")
@@ -68,7 +70,11 @@ public class AuthController {
     )
     @GetMapping("/about_me")
     public StringResponse getCurrentUserInfo(@RequestHeader String username) {
-        User user = userService.findByUsername(username).get();
-        return new StringResponse(user.getUsername() + " " + user.getEmail());
+        Optional<User> user = userService.findByUsername(username);
+        if (user.isEmpty()) {
+            return new StringResponse("Пользователь не найден");
+        } else {
+            return new StringResponse(user.get().getUsername() + " " + user.get().getEmail());
+        }
     }
 }
