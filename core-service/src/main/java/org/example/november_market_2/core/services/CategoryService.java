@@ -7,6 +7,7 @@ import org.example.november_market_2.core.repositories.CategoryRepository;
 import org.example.november_market_2.core.soap.categories.CategorySoap;
 import org.springframework.stereotype.Service;
 
+import java.util.IdentityHashMap;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -15,8 +16,16 @@ import java.util.function.Function;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
+    private IdentityHashMap<String, Category> identityHashMap = new IdentityHashMap<>();
+
     public Optional<Category> findByTitle(String title) {
-        return categoryRepository.findByTitle(title);
+        if (identityHashMap.containsKey(title)) {
+            return Optional.ofNullable(identityHashMap.get(title));
+        } else {
+            Optional<Category> category = categoryRepository.findByTitle(title);
+            category.ifPresent(value -> identityHashMap.put(title, value));
+            return category;
+        }
     }
 
     public static final Function<Category, CategorySoap> functionEntityToSoap = ce -> {
@@ -30,3 +39,4 @@ public class CategoryService {
         return categoryRepository.findByTitle(title).map(functionEntityToSoap).get();
     }
 }
+
